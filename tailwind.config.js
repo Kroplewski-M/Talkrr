@@ -5,7 +5,7 @@ export default {
     extend: {},
     colors: {
       primaryText: "#082b22",
-      secondaryText: "#eeeeee",
+      secondaryText: "#fefefe",
       background: "#ffffff",
       logo: "#ffffff",
       primaryButton: "#30d9ac",
