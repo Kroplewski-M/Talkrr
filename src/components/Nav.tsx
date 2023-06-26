@@ -1,4 +1,4 @@
-import { Logo } from "./svg/logo"
+import { Logo } from "./svg/Logo"
 
 
 export const Nav = ()=>{
