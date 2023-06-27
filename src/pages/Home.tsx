@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { Clock } from "../components/svg/Clock"
 import { Messaging } from "../components/svg/Messaging"
 
@@ -5,18 +6,20 @@ import { Messaging } from "../components/svg/Messaging"
 export const Home = ()=>{
 
     return(
-        <section className="w-[100vw] min-h-[100vh] bg-background">
+        <section className="w-[100vw] min-h-[100vh] bg-background animate-fadeIn">
             <div className="w-[100vw] mx-auto md:w-[700px] ">
                 <h1 className="font-bold text-[50px] text-accent text-center mt-16
                 md:text-[90px] md:text-left">Talkrr</h1>
                 <p className="font-semibold w-[80%] text-accent/80 mx-auto mt-[10px] text-center
                 md:text-[30px] md:text-left md:mx-0">Instantly connect with friends and family and enjoy instant chatting.</p>
                 <div className="w-[100px] h-[30px] md:w-[200px] md:h-[40px] mx-auto mt-5 md:mx-0 md:mt-10">
-                    <button 
-                    className="w-[100%] h-[100%] bg-secondaryButton border-2 border-dashed hover:border-solid border-primaryButton rounded-sm text-primaryText font-light hover:font-normal"
-                    >
-                    Start Now!
-                    </button>
+                    <Link to='/login'>
+                        <button 
+                        className="w-[100%] h-[100%] bg-secondaryButton border-2 border-dashed hover:border-solid border-primaryButton rounded-sm text-primaryText font-light hover:font-normal"
+                        >
+                        Start Now!
+                        </button>
+                    </Link>
                 </div>
 
             </div>
@@ -38,7 +41,7 @@ export const Home = ()=>{
             </div>
             <div className="mt-10 md:mt-16 w-[200px] mx-auto text-primaryText md:w-[500px] md:flex md:space-x-5">
                 <div className="">
-                    <p className="text-center md:text-left font-semibold md:mb-[10px]">Create an account now! and start chatting.</p>
+                    <p className="text-center md:text-left font-semibold mb-[10px]">Create an account now! and start chatting.</p>
                     <button 
                     className="w-[100%] md:w-[250px] h-[100%] md:h-[50px] mt-[10px] bg-secondaryButton border-2 border-dashed hover:border-solid border-primaryButton rounded-sm text-primaryText font-light hover:font-normal"
                     >
@@ -46,7 +49,7 @@ export const Home = ()=>{
                     </button>
                 </div>
                 <div className="">
-                    <p className="text-center md:text-left font-semibold mt-5 md:mt-0 md:mb-[10px]">Or log back in to your accountand continue talking!</p>
+                    <p className="text-center md:text-left font-semibold mt-5 md:mt-0 mb-[10px]">Or log back in to your accountand continue talking!</p>
                     <button 
                     className="w-[100%] h-[100%] md:w-[250px] md:h-[50px] mt-[10px] bg-secondaryButton border-2 border-dashed hover:border-solid border-primaryButton rounded-sm text-primaryText font-light hover:font-normal"
                     >
