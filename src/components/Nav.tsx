@@ -1,6 +1,6 @@
 import { Logo } from "./svg/Logo"
 import { useLocation } from 'react-router-dom'
-
+import { Link } from "react-router-dom";
 export const Nav = ()=>{
     const location = useLocation();
 
@@ -11,10 +11,14 @@ export const Nav = ()=>{
                     <div className="flex self-center ml-5">
                         <Logo width={30} height={30} color="#ffffff"/>
                     </div>
-                    <h1 className="text-logo font-bold text-[24px] flex self-center">Talkrr</h1> 
+                    <Link to="/" className="flex self-center">
+                        <h1 className="text-logo font-bold text-[24px] ">Talkrr</h1> 
+                    </Link>
                 </div>
                <div className="flex flex-row-reverse w-[100%]">
-                <p className="flex self-center mr-5 font-bold text-secondaryText hover:cursor-pointer">Login/Register</p>
+               <Link to="/login" className="flex self-center">
+                    <p className="mr-5 font-bold text-secondaryText hover:cursor-pointer">Login/Register</p>
+               </Link>
                </div>
             </nav>
         </>
