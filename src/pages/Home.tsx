@@ -6,7 +6,7 @@ import { Messaging } from "../components/svg/Messaging"
 export const Home = ()=>{
 
     return(
-        <section className="w-[100vw] min-h-[100vh] bg-background animate-fadeIn">
+        <section className="w-[100vw] min-h-[100vh] bg-background animate-fadeIn pb-16">
             <div className="w-[100vw] mx-auto md:w-[700px] ">
                 <h1 className="font-bold text-[50px] text-accent text-center mt-16
                 md:text-[90px] md:text-left">Talkrr</h1>
@@ -42,19 +42,23 @@ export const Home = ()=>{
             <div className="mt-10 md:mt-16 w-[200px] mx-auto text-primaryText md:w-[500px] md:flex md:space-x-5">
                 <div className="">
                     <p className="text-center md:text-left font-semibold mb-[10px]">Create an account now! and start chatting.</p>
-                    <button 
-                    className="w-[100%] md:w-[250px] h-[100%] md:h-[50px] mt-[10px] bg-secondaryButton border-2 border-dashed hover:border-solid border-primaryButton rounded-sm text-primaryText font-light hover:font-normal"
-                    >
-                    Register!
-                    </button>
+                    <Link to="/register">
+                        <button 
+                        className="w-[100%] md:w-[250px] h-[100%] md:h-[50px] mt-[10px] bg-secondaryButton border-2 border-dashed hover:border-solid border-primaryButton rounded-sm text-primaryText font-light hover:font-normal"
+                        >
+                        Register!
+                        </button>
+                    </Link>
                 </div>
                 <div className="">
                     <p className="text-center md:text-left font-semibold mt-5 md:mt-0 mb-[10px]">Or log back in to your accountand continue talking!</p>
-                    <button 
-                    className="w-[100%] h-[100%] md:w-[250px] md:h-[50px] mt-[10px] bg-secondaryButton border-2 border-dashed hover:border-solid border-primaryButton rounded-sm text-primaryText font-light hover:font-normal"
-                    >
-                    Login
-                    </button>
+                    <Link to="/login">
+                        <button 
+                        className="w-[100%] h-[100%] md:w-[250px] md:h-[50px] mt-[10px] bg-secondaryButton border-2 border-dashed hover:border-solid border-primaryButton rounded-sm text-primaryText font-light hover:font-normal"
+                        >
+                        Login
+                        </button>
+                    </Link>
 
                 </div>
             </div>
