@@ -19,7 +19,7 @@ export default {
       background: "#ffffff",
       logo: "#ffffff",
       primaryButton: "#30d9ac",
-      secondaryButton: "##f2fdfa",
+      secondaryButton: "#f2fdfa",
       accent: "#46ddb5",
       navBg: "#30d9ac",
     },
