@@ -20,6 +20,7 @@ export default {
       logo: "#ffffff",
       primaryButton: "#30d9ac",
       secondaryButton: "#f2fdfa",
+      signOutBtn: "#BB0000",
       accent: "#46ddb5",
       navBg: "#30d9ac",
     },
