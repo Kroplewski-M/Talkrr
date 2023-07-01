@@ -24,7 +24,7 @@ export const Register = ()=>{
                         <p className="font-bold text-center text-primaryText/90 text-[35px] pt-5 z-10">Register</p>
                     </div>
                     <RegisterForm />
-                    <div className=" mt-16 w-[170px] mx-auto ">
+                    <div className=" mt-16 w-[170px] ml-5 md:mx-auto md:w-[500px]">
                         <p className="text-primary/60 font-semibold text-[18px]">Already have an account? Login now!</p>
                         <div className="w-[170px] h-[40px]">
                             <Link to='/login'>
