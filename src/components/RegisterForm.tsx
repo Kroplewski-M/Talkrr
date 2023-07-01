@@ -26,19 +26,33 @@ export const RegisterForm = ()=>{
                 <div className="md:flex md:flex-wrap">
                     <div className="md:mr-5">
                         <label htmlFor="FirstName" className="block font-semibold text-primaryText/70 text-[25px]">First Name:</label>
-                        <input type="text" id="FirstName" {...register("FirstName")} placeholder="John" className="bg-accent/0 mb-5 border-b-accent border-b-2 w-[200px] focus:outline-0 font-semibold text-primaryText text-[20px] h-[40px]"/>
+                        <input type="text" id="FirstName" {...register("FirstName",{
+                            required:'Required'})} placeholder="John" className="bg-accent/0 mb-5 border-b-accent border-b-2 w-[200px] focus:outline-0 font-semibold text-primaryText text-[20px] h-[40px]"/>
+                            <p className="font-light text-signOutBtn -mt-5">{errors.FirstName?.message}</p>
                     </div>
                     <div>
                         <label htmlFor="LastName" className="block font-semibold text-primaryText/70 text-[25px]">Last Name:</label>
-                        <input type="text" {...register("LastName")} id="LastName" placeholder="Doe" className="bg-accent/0 mb-5 border-b-accent border-b-2 w-[200px] focus:outline-0 font-semibold text-primaryText text-[20px] h-[40px]"/>
+                        <input type="text" {...register("LastName",{
+                            required:'Required'})} id="LastName" placeholder="Doe" className="bg-accent/0 mb-5 border-b-accent border-b-2 w-[200px] focus:outline-0 font-semibold text-primaryText text-[20px] h-[40px]"/>
+                            <p className="font-light text-signOutBtn -mt-5">{errors.LastName?.message}</p>
+
                     </div>
                     <div className="md:mr-5">
                         <label htmlFor="email" className="block font-semibold text-primaryText/70 text-[25px]">Email:</label>
-                        <input type="email" {...register("Email")} id="email" placeholder="JohnDoe@gmail.com" className="bg-accent/0 mb-5 border-b-accent border-b-2 w-[200px] focus:outline-0 font-semibold text-primaryText text-[20px] h-[40px]"/>
+                        <input type="email" {...register("Email",{
+                            required:'Required'})} id="email" placeholder="JohnDoe@gmail.com" className="bg-accent/0 mb-5 border-b-accent border-b-2 w-[200px] focus:outline-0 font-semibold text-primaryText text-[20px] h-[40px]"/>
+                            <p className="font-light text-signOutBtn -mt-5">{errors.Email?.message}</p>
                     </div>
                     <div>
                         <label htmlFor="password" className="block font-semibold text-primaryText/70 text-[25px]">Password:</label>
-                        <input type="password" {...register("Password")} id="password" placeholder="Password" className="bg-accent/0 font-semibold border-b-accent border-b-2 w-[200px] focus:outline-0 text-[20px] h-[40px] mb-5"/>
+                        <input type="password" {...register("Password",{
+                            required:'Required',
+                            minLength:{
+                                value:6,
+                                message:'Min characters:6'
+                            }})} id="password" placeholder="Password" className="bg-accent/0 font-semibold border-b-accent border-b-2 w-[200px] focus:outline-0 text-[20px] h-[40px] mb-5"/>
+                            <p className="font-light text-signOutBtn -mt-5">{errors.Password?.message}</p>
+
                     </div>
                 </div>
 
