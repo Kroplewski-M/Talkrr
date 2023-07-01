@@ -1,17 +1,25 @@
 import { SubmitHandler, useForm } from "react-hook-form"
-
+import { useState } from "react";
 
 type Inputs = {
     FirstName:string,
     LastName:string,
     Email:string,
     Password:string,
+    ProfileImg: File,
 }
 
 export const RegisterForm = ()=>{
 
     const {register,handleSubmit,formState: { errors },} = useForm<Inputs>();
+    const [profileIcon, setProfileIcon] = useState<File>();
 
+    const changeFile = (e: React.ChangeEvent<HTMLInputElement>) =>{
+        if(e.target.files){
+            console.log(e.target.files[0]);
+            setProfileIcon(e.target.files[0]);
+        }
+    }
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         console.log(data)
     }
@@ -20,9 +28,11 @@ export const RegisterForm = ()=>{
         <section className="relative z-50">
             <form className="w-[250px] md:w-[500px] mx-auto mt-10  grid place-content-center rounded-sm" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex md:flex-row flex-col mb-5">
-                    <label htmlFor="ProfileImage" className="inline font-semibold text-primaryText/70 text-[25px]">Profile Image:</label>
-                    <input type="file" name="ProfileImage" id="ProfileImage" className="md:ml-5 md:mt-[5px]" />
+                    <label htmlFor="ProfileImg" className="inline font-semibold text-primaryText/70 text-[20px]">Profile Image:</label>
+                    <input type="file" {...register("ProfileImg",{
+                        required:'Required'})} id="ProfileImg" onChange={(e) => changeFile(e)} className="md:ml-5 md:mt-[5px]" />
                 </div>
+                    <p className="font-light text-signOutBtn -mt-5">{errors.ProfileImg?.message}</p>
                 <div className="md:flex md:flex-wrap">
                     <div className="md:mr-5">
                         <label htmlFor="FirstName" className="block font-semibold text-primaryText/70 text-[25px]">First Name:</label>
@@ -55,10 +65,6 @@ export const RegisterForm = ()=>{
 
                     </div>
                 </div>
-
-
-
-
                 <button type="submit" className="block w-[170px] h-[40px] font-semibold border-primaryText border-dashed border-2 relative z-50 mt-10 hover:font-bold hover:text-primaryText/80 hover:shadow-xl">Register</button>
             </form>
         </section>
