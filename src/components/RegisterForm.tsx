@@ -10,18 +10,26 @@ type Inputs = {
 }
 
 export const RegisterForm = ()=>{
-
+    window.scrollTo(0, 0);
     const {register,handleSubmit,formState: { errors },} = useForm<Inputs>();
     const [profileIcon, setProfileIcon] = useState<File>();
+    const [loading,setLoading] = useState(false);
 
     const changeFile = (e: React.ChangeEvent<HTMLInputElement>) =>{
         if(e.target.files){
-            console.log(e.target.files[0]);
             setProfileIcon(e.target.files[0]);
         }
     }
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data)
+        console.log(data);
+        setLoading(true);
+        try{
+
+        }catch(error){
+
+        }finally{
+            setLoading(false);
+        }
     }
 
     return(
@@ -29,7 +37,7 @@ export const RegisterForm = ()=>{
             <form className="w-[250px] md:w-[500px] mx-auto mt-10  grid place-content-center rounded-sm" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex md:flex-row flex-col mb-5">
                     <label htmlFor="ProfileImg" className="inline font-semibold text-primaryText/70 text-[20px]">Profile Image:</label>
-                    <input type="file" {...register("ProfileImg",{
+                    <input type="file" accept="image/png, image/jpeg" {...register("ProfileImg",{
                         required:'Required'})} id="ProfileImg" onChange={(e) => changeFile(e)} className="md:ml-5 md:mt-[5px]" />
                 </div>
                     <p className="font-light text-signOutBtn -mt-5">{errors.ProfileImg?.message}</p>
@@ -65,7 +73,7 @@ export const RegisterForm = ()=>{
 
                     </div>
                 </div>
-                <button type="submit" className="block w-[170px] h-[40px] font-semibold border-primaryText border-dashed border-2 relative z-50 mt-10 hover:font-bold hover:text-primaryText/80 hover:shadow-xl">Register</button>
+                <button type="submit" className="block w-[170px] h-[40px] font-semibold border-primaryText border-dashed border-2 relative z-50 mt-10 hover:font-bold hover:text-primaryText/80 hover:shadow-xl" disabled={loading}>Register</button>
             </form>
         </section>
     )
