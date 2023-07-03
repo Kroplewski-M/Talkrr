@@ -4,7 +4,7 @@ import { Nav } from "./components/Nav";
 import { Footer } from "./components/Footer";
 import { Login } from "./pages/Login";
 import { Register } from "./pages/Register";
-import { Profile } from "./components/Profile";
+import { Messages } from "./pages/Messages";
 
 function App() {
 
@@ -15,6 +15,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/messages" element={<Messages />} />
 
       </Routes>
       <Footer />

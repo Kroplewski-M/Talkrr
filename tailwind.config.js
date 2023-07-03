@@ -23,6 +23,7 @@ export default {
       signOutBtn: "#BB0000",
       accent: "#46ddb5",
       navBg: "#30d9ac",
+      black: "#222222",
     },
   },
   plugins: [],

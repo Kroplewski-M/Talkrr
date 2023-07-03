@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useState } from "react";
+import { UploadImg } from "./svg/UploadImg";
 
 type Inputs = {
     FirstName:string,
@@ -36,9 +37,14 @@ export const RegisterForm = ()=>{
         <section className="relative z-50">
             <form className="w-[250px] md:w-[500px] mx-auto mt-10  grid place-content-center rounded-sm" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex md:flex-row flex-col mb-5">
-                    <label htmlFor="ProfileImg" className="inline font-semibold text-primaryText/70 text-[20px]">Profile Image:</label>
+                    <label htmlFor="ProfileImg" className="inline font-semibold text-primaryText/70 text-[20px] flex">Profile Image:
+                        <div className="hover:cursor-pointer ml-5 -mt-[10px]">
+                            <UploadImg width={50} height={50} fill="#46ddb5" />
+                        </div>
+                        <p className="text-[10px]">{(profileIcon?.name)?.slice(0,20)}</p>
+                    </label>
                     <input type="file" accept="image/png, image/jpeg" {...register("ProfileImg",{
-                        required:'Required'})} id="ProfileImg" onChange={(e) => changeFile(e)} className="md:ml-5 md:mt-[5px]" />
+                        required:'Required'})} id="ProfileImg" onChange={(e) => changeFile(e)} className="md:ml-5 md:mt-[5px] hidden" />
                 </div>
                     <p className="font-light text-signOutBtn -mt-5">{errors.ProfileImg?.message}</p>
                 <div className="md:flex md:flex-wrap">
