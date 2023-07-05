@@ -7,6 +7,8 @@ import {ref,uploadBytesResumable,getDownloadURL} from 'firebase/storage';
 import {doc,setDoc} from 'firebase/firestore';
 import { useNavigate } from "react-router-dom";
 import { useUserInfo } from "../context/User";
+import { usePopUpsInfo } from "../context/PopUps";
+
 type Inputs = {
     FirstName:string,
     LastName:string,
@@ -16,14 +18,14 @@ type Inputs = {
 }
 
 export const RegisterForm = ()=>{
-    const {loginUser} = useUserInfo();
-    const navigate = useNavigate();
     window.scrollTo(0, 0);
+    const {loginUser} = useUserInfo();
+    const {PushPopUp} = usePopUpsInfo();
+    const navigate = useNavigate();
     const {register,handleSubmit,formState: { errors },} = useForm<Inputs>();
     const [profileIcon, setProfileIcon] = useState<ArrayBuffer>();
     const [imgName,setImgName] = useState('');
     const [loading,setLoading] = useState(false);
-    const [error,setError] = useState(true);
 
     const changeFile = (e: React.ChangeEvent<HTMLInputElement>) =>{
         if(e.target.files){
@@ -35,6 +37,7 @@ export const RegisterForm = ()=>{
      const onSubmit: SubmitHandler<Inputs> = async(data) => {
         setLoading(true);
         try{
+            PushPopUp('Creating account...', 'defaultPopUp');
             //CREATE USER ACCOUNT
             const user = await createUserWithEmailAndPassword(auth,data.Email,data.Password);
             const storageRef = ref(storage,`${data.Email}`);
@@ -58,13 +61,13 @@ export const RegisterForm = ()=>{
                 });
                 await setDoc(doc(db,"userChats",user.user.uid),{});
                 
+                PushPopUp('Account Created!', 'successPopUp');
                 loginUser({uid:user.user.uid,firstName:data.FirstName,lastName:data.LastName,displayName:`${data.FirstName} ${data.LastName}`,email:data.Email,photoUrl:downloadUrl});
                 navigate('/messages');
             }
 
         }catch(error){
-            console.log(error);
-            setError(true);
+            PushPopUp('Error Occured...', 'errorPopUp');
         }finally{
             setLoading(false);
         }
