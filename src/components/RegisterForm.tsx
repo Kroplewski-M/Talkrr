@@ -1,9 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form"
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { UploadImg } from "./svg/UploadImg";
-import { auth,storage } from "../firebase";
+import { auth,db,storage } from "../firebase";
 import { createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {ref,uploadBytesResumable,getDownloadURL} from 'firebase/storage';
+import {doc,setDoc} from 'firebase/firestore';
 
 type Inputs = {
     FirstName:string,
@@ -16,16 +17,13 @@ type Inputs = {
 export const RegisterForm = ()=>{
     window.scrollTo(0, 0);
     const {register,handleSubmit,formState: { errors },} = useForm<Inputs>();
-    const [profileIcon, setProfileIcon] = useState<File>();
-    const [imgName,setImgName]= useState('');
+    const [profileIcon, setProfileIcon] = useState<ArrayBuffer>();
     const [loading,setLoading] = useState(false);
-    const [error,setError] = useState(false);
-
+    const [error,setError] = useState(true);
     const changeFile = (e: React.ChangeEvent<HTMLInputElement>) =>{
         if(e.target.files){
-            setImgName(e.target.files[0]?.name);
-            // e.target.files[0]?.arrayBuffer().then((res)=>setProfileIcon(res));
-            setProfileIcon(e.target.files[0])
+            e.target.files[0]?.arrayBuffer().then((res)=>setProfileIcon(res));
+            // setProfileIcon(e.target.files[0])
         }
     }
      const onSubmit: SubmitHandler<Inputs> = async(data) => {
@@ -33,27 +31,28 @@ export const RegisterForm = ()=>{
         try{
             //CREATE USER ACCOUNT
             const user = await createUserWithEmailAndPassword(auth,data.Email,data.Password);
-
-            //UPLOAD IMAGE
             const storageRef = ref(storage,`${data.Email}`);
-            if(profileIcon!= undefined){
-                const uploadTask = uploadBytesResumable(storageRef, profileIcon);
-                uploadTask.on('state_changed', 
-                (error) => {
-                    setError(true);
-                    console.log(error);
-                }, 
-                () => {
-                    getDownloadURL(uploadTask.snapshot.ref).then(async(downloadURL) => {
+            //UPLOAD IMAGE
+            if(profileIcon != undefined){
+                const uploadSnapshot = await uploadBytesResumable(storageRef, profileIcon);
+                const downloadUrl = await getDownloadURL(uploadSnapshot.ref);
+    
+                await updateProfile(user.user, {
+                    displayName: `${data.FirstName} ${data.LastName}`,
+                    photoURL: downloadUrl,
+                });
+    
+                await setDoc(doc(db, "users", user.user.uid), {
+                    uid: user.user.uid,
+                    displayName: `${data.FirstName} ${data.LastName}`,
+                    firstName: data.FirstName,
+                    lastName: data.LastName,
+                    email: data.Email,
+                    photoUrl: downloadUrl,
+                });
 
-                        await updateProfile(user.user,{
-                            displayName: `${data.FirstName} ${data.LastName}`,
-                            photoURL:downloadURL,
-                        })
-                    });
-                })
             }
-            console.log(user.user);
+
         }catch(error){
             console.log(error);
             setError(true);
@@ -61,7 +60,6 @@ export const RegisterForm = ()=>{
             setLoading(false);
         }
 
-        
     }
 
 
@@ -73,7 +71,7 @@ export const RegisterForm = ()=>{
                         <div className="hover:cursor-pointer ml-5 -mt-[10px]">
                             <UploadImg width={50} height={50} fill="#46ddb5" />
                         </div>
-                        <p className="text-[10px]">{(imgName)?.slice(0,20)}</p>
+                        {/* <p className="text-[10px]">{(profileIcon?.name)?.slice(0,20)}</p> */}
                     </label>
                     <input type="file" accept="image/png, image/jpeg" {...register("ProfileImg",{
                         required:'Required'})} id="ProfileImg" onChange={(e) => changeFile(e)} className="md:ml-5 md:mt-[5px] hidden" />
