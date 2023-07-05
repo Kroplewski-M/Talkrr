@@ -1,6 +1,4 @@
 import { ChatList } from "../components/ChatList"
-import { Profile } from "../components/Profile"
-
 
 export const Messages = ()=>{
 
