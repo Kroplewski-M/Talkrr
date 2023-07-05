@@ -1,9 +1,10 @@
 import { Logo } from "./svg/Logo"
 import { useLocation } from 'react-router-dom'
 import { Link } from "react-router-dom";
+import { useUserInfo } from "../context/User";
 export const Nav = ()=>{
     const location = useLocation();
-
+    const {userInfo} = useUserInfo();
     return(
         <>
             <nav className={`w-[100wv] h-[50px] bg-navBg flex ${location.pathname=='/login'||location.pathname=='/register'?'hidden':'visible'}`}>
@@ -16,9 +17,20 @@ export const Nav = ()=>{
                     </Link>
                 </div>
                <div className="flex flex-row-reverse w-[100%]">
-               <Link to="/login" className="flex self-center">
-                    <p className="mr-5 font-bold text-secondaryText hover:cursor-pointer">Login/Register</p>
-               </Link>
+                {
+                    userInfo.uid == ''?(
+                    <>
+                        <Link to="/login" className="flex self-center">
+                            <p className="mr-5 font-bold text-secondaryText hover:cursor-pointer">Login/Register</p>
+                        </Link>
+                    </>):(
+                    <>
+                    <div className="flex self-center mr-[10px] hover:cursor-pointer">
+                        <img src={userInfo.photoUrl} alt="" className="w-[40px] h-[40px] rounded-full"/>
+                    </div>
+                    </>)
+                }
+
                </div>
             </nav>
         </>

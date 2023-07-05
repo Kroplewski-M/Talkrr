@@ -1,11 +1,12 @@
 import { SubmitHandler, useForm } from "react-hook-form"
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import { UploadImg } from "./svg/UploadImg";
 import { auth,db,storage } from "../firebase";
 import { createUserWithEmailAndPassword,updateProfile } from "firebase/auth";
 import {ref,uploadBytesResumable,getDownloadURL} from 'firebase/storage';
 import {doc,setDoc} from 'firebase/firestore';
-
+import { useNavigate } from "react-router-dom";
+import { useUserInfo } from "../context/User";
 type Inputs = {
     FirstName:string,
     LastName:string,
@@ -15,15 +16,20 @@ type Inputs = {
 }
 
 export const RegisterForm = ()=>{
+    const {loginUser} = useUserInfo();
+    const navigate = useNavigate();
     window.scrollTo(0, 0);
     const {register,handleSubmit,formState: { errors },} = useForm<Inputs>();
     const [profileIcon, setProfileIcon] = useState<ArrayBuffer>();
+    const [imgName,setImgName] = useState('');
     const [loading,setLoading] = useState(false);
     const [error,setError] = useState(true);
+
     const changeFile = (e: React.ChangeEvent<HTMLInputElement>) =>{
         if(e.target.files){
             e.target.files[0]?.arrayBuffer().then((res)=>setProfileIcon(res));
             // setProfileIcon(e.target.files[0])
+            setImgName(e.target.files[0].name);
         }
     }
      const onSubmit: SubmitHandler<Inputs> = async(data) => {
@@ -50,7 +56,10 @@ export const RegisterForm = ()=>{
                     email: data.Email,
                     photoUrl: downloadUrl,
                 });
-
+                await setDoc(doc(db,"userChats",user.user.uid),{});
+                
+                loginUser({uid:user.user.uid,firstName:data.FirstName,lastName:data.LastName,displayName:`${data.FirstName} ${data.LastName}`,email:data.Email,photoUrl:downloadUrl});
+                navigate('/messages');
             }
 
         }catch(error){
@@ -71,7 +80,7 @@ export const RegisterForm = ()=>{
                         <div className="hover:cursor-pointer ml-5 -mt-[10px]">
                             <UploadImg width={50} height={50} fill="#46ddb5" />
                         </div>
-                        {/* <p className="text-[10px]">{(profileIcon?.name)?.slice(0,20)}</p> */}
+                        <p className="text-[10px]">{(imgName).slice(0,20)}</p>
                     </label>
                     <input type="file" accept="image/png, image/jpeg" {...register("ProfileImg",{
                         required:'Required'})} id="ProfileImg" onChange={(e) => changeFile(e)} className="md:ml-5 md:mt-[5px] hidden" />
