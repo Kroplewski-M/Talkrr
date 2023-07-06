@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { usePopUpsInfo } from "../context/PopUps";
 import { SubmitHandler, useForm } from "react-hook-form"
-
-
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useUserInfo } from "../context/User";
+import { useNavigate } from "react-router-dom";
 type Inputs = {
     email:string,
     password:string,
@@ -10,6 +11,8 @@ type Inputs = {
 
 export const LoginForm = ()=>{
     window.scrollTo(0, 0);
+    const navigate = useNavigate();
+    const {loginUser} = useUserInfo();
     const {register,handleSubmit,formState: { errors },} = useForm<Inputs>();
     const {PushPopUp} = usePopUpsInfo();
     const [loading,setLoading] = useState(false);
@@ -18,7 +21,23 @@ export const LoginForm = ()=>{
 
     const onSubmit:SubmitHandler<Inputs> = async(data)=>{
         PushPopUp("loggin in","defaultPopUp");
-        console.log(data);
+        setLoading(true);
+        try{
+            const auth = getAuth();
+            const user = await signInWithEmailAndPassword(auth, data.email, data.password)
+            console.log(JSON.stringify(user.user.photoURL));
+            loginUser({
+                uid:user.user.uid,
+                displayName:user.user.displayName!=null?user.user.displayName:"",
+                email:user.user.email!=null?user.user.email:"",
+                photoUrl: user.user.photoURL!=null?user.user.photoURL:"",
+            });
+            navigate('/messages');
+        }catch(error){
+            console.log(error);
+        }finally{
+            setLoading(false)
+        }
     }
     return(
         <section className="relative z-50">

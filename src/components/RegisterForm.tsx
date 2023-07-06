@@ -42,8 +42,11 @@ export const RegisterForm = ()=>{
             const user = await createUserWithEmailAndPassword(auth,data.Email,data.Password);
             const storageRef = ref(storage,`${data.Email}`);
             //UPLOAD IMAGE
+            const metadata = {
+                contentType: 'image/jpeg',
+              };
             if(profileIcon != undefined){
-                const uploadSnapshot = await uploadBytesResumable(storageRef, profileIcon);
+                const uploadSnapshot = await uploadBytesResumable(storageRef, profileIcon,metadata);
                 const downloadUrl = await getDownloadURL(uploadSnapshot.ref);
     
                 await updateProfile(user.user, {
@@ -62,7 +65,7 @@ export const RegisterForm = ()=>{
                 await setDoc(doc(db,"userChats",user.user.uid),{});
                 
                 PushPopUp('Account Created!', 'successPopUp');
-                loginUser({uid:user.user.uid,firstName:data.FirstName,lastName:data.LastName,displayName:`${data.FirstName} ${data.LastName}`,email:data.Email,photoUrl:downloadUrl});
+                loginUser({uid:user.user.uid,displayName:`${data.FirstName} ${data.LastName}`,email:data.Email,photoUrl:downloadUrl});
                 navigate('/messages');
             }
 

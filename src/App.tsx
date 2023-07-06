@@ -9,6 +9,7 @@ import Authguard from "./components/AuthGuard";
 import { usePopUpsInfo } from "./context/PopUps";
 function App() {
   const {PopUps} = usePopUpsInfo();
+  
   return (
     <main className="min-h-100vh">
         <Nav />
