@@ -25,9 +25,6 @@ export const Nav = ()=>{
                         </Link>
                     </>):(
                     <>
-                    <div className="flex self-center mr-[10px] hover:cursor-pointer">
-                        <img src={userInfo.photoUrl} alt="" className="w-[40px] h-[40px] rounded-full"/>
-                    </div>
                     </>)
                 }
 
