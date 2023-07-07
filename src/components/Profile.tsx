@@ -1,16 +1,38 @@
+import { useUserInfo } from "../context/User"
+import { Close } from "./svg/Close";
+import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+interface ProfileProps{
+    close: ()=>void,
+}
 
-
-export const Profile = ()=>{
+export const Profile = ({close}:ProfileProps)=>{
+    const {userInfo,logoutUser} = useUserInfo();
+    const navigate = useNavigate();
+    const UserSignOut = async()=>{
+        const auth = getAuth();
+        try{
+            await signOut(auth);
+            logoutUser();
+            navigate("/");
+        }catch(error){
+            console.log(error);
+        }
+    }
     return(
         <section className="fixed top-0 z-[50] w-[100vw] h-[100vh] backdrop-blur-md">
             <div className="w-[100%] h-[100%] grid place-content-center">
                 <div className="w-[270px] pb-10 rounded-md bg-accent mx-auto mt-10 pt-10 relative">
-                    <p className="font-bold absolute right-2 top-2">X</p>
-                    <div className="w-[80px] h-[80px] rounded-full mx-auto bg-primaryText"></div>
-                    <p className="font-bold text-[20px] text-center mt-6">Mateusz Kroplewski</p>
-                    <p className="font-semibold text-[15px] text-center mt-3 ">Kroplewskimateusz@gmail.com</p>
-                    <div className="w-[200px] h-[35px] mx-auto mt-10">
-                        <button className="w-[100%] h-[100%] font-semibold border-solid border-signOutBtn border-2 rounded-md ">SignOut</button>
+                    <div className="absolute right-2 top-2 width-[30px] height-[30px] hover:cursor-pointer" onClick={close}>
+                        <Close width={30} height={30} fill="#000000" />
+                    </div>
+                    <div className="w-[80px] h-[80px] mx-auto">
+                        <img src={userInfo.photoUrl} alt="" className="w-[100%] h-[100%] rounded-full"/>
+                    </div>
+                    <p className="font-bold text-[20px] text-center mt-6">{userInfo.displayName}</p>
+                    <p className="font-semibold text-[15px] text-center mt-3 ">{userInfo.email}</p>
+                    <div className="w-[200px] h-[35px] mx-auto mt-10" onClick={UserSignOut}>
+                        <button className="w-[100%] h-[100%] font-semibold border-solid border-signOutBtn border-2 rounded-md hover:bg-signOutBtn hover:text-secondaryText">SignOut</button>
                     </div>
                 </div>
 
