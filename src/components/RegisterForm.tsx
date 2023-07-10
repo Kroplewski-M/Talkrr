@@ -63,6 +63,7 @@ export const RegisterForm = ()=>{
                     photoUrl: downloadUrl,
                 });
                 await setDoc(doc(db,"userChats",user.user.uid),{});
+                await setDoc(doc(db,"userFriends",user.user.uid),{});
                 
                 PushPopUp('Account Created!', 'successPopUp');
                 loginUser({uid:user.user.uid,displayName:`${data.FirstName} ${data.LastName}`,email:data.Email,photoUrl:downloadUrl});

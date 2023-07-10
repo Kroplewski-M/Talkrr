@@ -3,7 +3,11 @@ import { useUserInfo } from "../context/User"
 import { Profile } from "./Profile";
 import { useState } from "react";
 
-export const ChatList = ()=>{
+interface chatListProps{
+    openSearch:()=>void,
+}
+
+export const ChatList = ({openSearch}:chatListProps)=>{
     const {userInfo} = useUserInfo();
     const [showProfile, setShowProfile] = useState(false);
 
@@ -15,7 +19,7 @@ export const ChatList = ()=>{
                     <p className="text-primaryText md:pt-[5px] font-bold">{userInfo.displayName}</p>
                 </div>
                 <div className="grow pt-[5px]">
-                    <div>
+                    <div onClick={openSearch}>
                         <p className="hover:bg-accent/70 text-primaryText hover:cursor-pointer bg-background/70 rounded-md w-[120px] ml-auto text-center">Add Friends</p>
                     </div>
                 </div>
