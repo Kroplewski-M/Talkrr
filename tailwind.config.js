@@ -26,7 +26,7 @@ export default {
       black: "#222222",
       defaultPopUp: "#D3D3D3",
       errorPopUp: "#FF1a26",
-      successPopUp: "#00FF00",
+      successPopUp: "#33FF33",
     },
   },
   plugins: [],

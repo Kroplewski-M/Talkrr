@@ -7,9 +7,13 @@ import { Register } from "./pages/Register";
 import { Messages } from "./pages/Messages";
 import Authguard from "./components/AuthGuard";
 import { usePopUpsInfo } from "./context/PopUps";
+import { useUserInfo } from "./context/User";
+
 function App() {
   const {PopUps} = usePopUpsInfo();
-  
+  const {userInfo} = useUserInfo();
+
+
   return (
     <main className="min-h-100vh">
         <Nav />
