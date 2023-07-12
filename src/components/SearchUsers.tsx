@@ -3,7 +3,6 @@ import { Search } from "./svg/Search";
 import { collection,getDocs,or,query,where } from "firebase/firestore";
 import { db } from "../firebase";
 import { useUserInfo } from "../context/User";
-
 interface users{
     uid:string,
     displayName:string,
@@ -19,12 +18,14 @@ export const SearchUsers = ({setIsSearching}:SearchUsersPros)=>{
     const {userInfo} = useUserInfo();
     const [users,setUsers] = useState<users[]>([]);
     const [userName,setUserName] = useState('');
+    const [noResults,setNoResults] = useState(false);
 
     useEffect(()=>{
         if(userName ==""){
-            setUsers([]);
             setIsSearching(false);
+            setNoResults(false);
         }
+        setUsers([]);
     },[userName])
 
     const setSearchValue = (e:any)=>{
@@ -36,6 +37,11 @@ export const SearchUsers = ({setIsSearching}:SearchUsersPros)=>{
             const usersRef = collection(db,"users");
             const q = query(usersRef,or(where("displayName","==",userName),where("email","==",userName)),);
             const querySnapshot = await getDocs(q);
+            if(querySnapshot.size == 0){
+                setNoResults(true);
+            }else{
+                setNoResults(false);
+            }
             querySnapshot.forEach((doc)=>{
                 const user:users = {
                     uid:doc.data().uid,
@@ -49,6 +55,7 @@ export const SearchUsers = ({setIsSearching}:SearchUsersPros)=>{
                     setUsers(currUsers=>[...currUsers,user]);
                 }
             });
+
             console.log(users);
         }catch(error){
             console.log(error);
@@ -69,21 +76,23 @@ export const SearchUsers = ({setIsSearching}:SearchUsersPros)=>{
             </div>
                 {
                     users.length>0?(<>
-                    <div className="absolute bg-accent w-[100%] mt-16 z-50 h-[100vh]">
-                    <p className="font-semibold pl-5 pt-5 mb-5">Results:</p>
-                    {
-                        users.map(user=>(
-                            <div className="w-[100%] h-[70px] bg-black/50 mb-[5px] flex z-50 hover:cursor-pointer hover:bg-black/60 rounded-md" key={user.uid}>
-                                <img src={user.photoUrl} alt="" className="w-[40px] h-[40px] rounded-full flex self-center ml-5" />
-                                <p className="ml-5 flex self-center font-bold">{user.displayName}</p>
-                                <hr />
-                            </div>
-                        ))
-                    }
-            </div>
+                        <div className="absolute w-[100%] mt-16 z-50 h-[100vh]">
+                        <p className="font-semibold pl-5 pt-5 mb-5">Results:</p>
+                        {
+                            users.map(user=>(
+                                <div className="w-[100%] h-[70px] bg-black/10 mb-[5px] flex z-50 hover:cursor-pointer hover:bg-black/40 rounded-sm" key={user.uid}>
+                                    <img src={user.photoUrl} alt="" className="w-[40px] h-[40px] rounded-full flex self-center ml-5" />
+                                    <p className="ml-5 flex self-center font-bold">{user.displayName}</p>
+                                    <hr />
+                                </div>
+                            ))
+                        }
+                        </div>
                     
                     </>):(<></>)
                 }
+                        
+                {noResults?<p className="absolute mt-16 ml-5 font-bold text-errorPopUp/90">No Users Found!</p>:<></> }
 
         </div>
     )
