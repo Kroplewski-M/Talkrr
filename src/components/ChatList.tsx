@@ -8,7 +8,7 @@ import { SearchUsers } from "./SearchUsers";
 export const ChatList = ()=>{
     const {userInfo} = useUserInfo();
     const [showProfile, setShowProfile] = useState(false);
-
+    const [isSearching,setIsSearching] = useState(false);
     return(
         <section className="w-[100vw] md:w-[400px] h-[100vh] overflow-y-scroll bg-primaryButton/30">
             <div className="pt-[10px] px-[10px] ">
@@ -19,18 +19,23 @@ export const ChatList = ()=>{
             </div>
             <hr className="mt-[10px] opacity-[0.5]"/>
             <div className="">
-                <SearchUsers />
+                <SearchUsers setIsSearching={(e:boolean)=>setIsSearching(e)}/>
             </div>
-            <UserMessage />
-            <UserMessage />
-            <UserMessage />
-            <UserMessage />
-            <UserMessage />
-            <UserMessage />
-            <UserMessage />
-            <UserMessage />
-            <UserMessage />
-            <UserMessage />
+            {
+                isSearching?(<></>):(<>
+                    <UserMessage />
+                    <UserMessage />
+                    <UserMessage />
+                    <UserMessage />
+                    <UserMessage />
+                    <UserMessage />
+                    <UserMessage />
+                    <UserMessage />
+                    <UserMessage />
+                    <UserMessage />
+                
+                </>)
+            }
 
             {
                 showProfile?(<Profile close={()=> setShowProfile(false)} />):(<></>)
