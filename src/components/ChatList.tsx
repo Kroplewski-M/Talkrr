@@ -1,14 +1,29 @@
 import { UserMessage } from "./UserMessage"
 import { useUserInfo } from "../context/User"
 import { Profile } from "./Profile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchUsers } from "./SearchUsers";
-
+import {onSnapshot,doc} from "firebase/firestore";
+import { db } from "../firebase";
 
 export const ChatList = ()=>{
     const {userInfo} = useUserInfo();
     const [showProfile, setShowProfile] = useState(false);
     const [isSearching,setIsSearching] = useState(false);
+    const [chats,setChats] = useState<any>([]);
+
+    useEffect(()=>{
+        const unsub = onSnapshot(doc(db,"userChats",userInfo.uid), (doc)=>{
+            setChats(doc.data());
+            console.log(doc.data());
+        });
+
+        return ()=>{
+            unsub();
+        }
+    },[userInfo.uid])
+
+    console.log(chats);
     return(
         <section className="w-[100vw] md:w-[400px] h-[100vh] overflow-y-scroll bg-primaryButton/30">
             <div className="pt-[10px] px-[10px] ">
@@ -23,17 +38,7 @@ export const ChatList = ()=>{
             </div>
             {
                 isSearching?(<></>):(<>
-                    <UserMessage />
-                    <UserMessage />
-                    <UserMessage />
-                    <UserMessage />
-                    <UserMessage />
-                    <UserMessage />
-                    <UserMessage />
-                    <UserMessage />
-                    <UserMessage />
-                    <UserMessage />
-                
+                    <UserMessage />                
                 </>)
             }
 
