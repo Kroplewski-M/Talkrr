@@ -9,7 +9,7 @@ export const ChatList = ()=>{
     const {userInfo} = useUserInfo();
     const [showProfile, setShowProfile] = useState(false);
     const [isSearching,setIsSearching] = useState(false);
-    const {messages} = useMessagesInfo();
+    const {messages,selectMessage} = useMessagesInfo();
 
 
     return(
@@ -28,7 +28,7 @@ export const ChatList = ()=>{
                 isSearching?(<></>):(<>
                     {
                         Object.entries(messages!)?.map((chat:any)=>(
-                            <div key={chat[0]} className="" onClick={()=>console.log(chat[0])}>
+                            <div key={chat[0]} className="" onClick={()=>selectMessage(chat[0])}>
                                 <UserMessage name={chat[1].userInfo.displayName} photoUrl={chat[1].userInfo.photoUrl} message="hello" />
                             </div>
                         ))

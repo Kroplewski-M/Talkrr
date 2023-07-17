@@ -1,16 +1,57 @@
+import { useEffect, useState } from "react";
 import { ChatList } from "../components/ChatList"
-import { ChatUser } from "../components/chatUser"
-
+import { ChatUser } from "../components/ChatUser"
+import { useMessagesInfo } from "../context/Messages"
 export const Messages = ()=>{
+    const {selectedMessage,selectMessage} = useMessagesInfo();
+    const [showMessages,setShowMessages] = useState(false);
+    const [windowSize, setWindowSize] = useState<number>(getWindowSize());
+    const mobileLimit:number = 768;
+
+
+      //SET FILTER DISPLAY DEPENDING ON SCREEN SIZE
+      function getWindowSize() {
+        const innerWidth:number = window.innerWidth;
+        return innerWidth;
+      }
+      useEffect(() => {
+        function handleWindowResize() {
+          setWindowSize(getWindowSize());
+        }
+        window.addEventListener('resize', handleWindowResize);
+        return () => {
+          window.removeEventListener('resize', handleWindowResize);
+        };
+      }, []);
+      useEffect(() =>{
+        if(windowSize >= mobileLimit){
+            setShowMessages(true);
+        }
+        if(windowSize < mobileLimit){
+            setShowMessages(false);
+        }
+    },[windowSize]);
+
+        useEffect(()=>{
+            if(selectedMessage !=""){
+                setShowMessages(true);
+            }
+        },[selectedMessage])
+    
+    const goBack = ()=>{
+        setShowMessages(false);
+        selectMessage("");
+    }
     return(
         <section className="w-[100vw] h-[100vh] flex">
-            <div className="border">
+            <div className={`border ${showMessages&&windowSize < mobileLimit?("hidden"):("inline")}`}>
                 <ChatList />
             </div>
-            <div className="border w-[100%] bg-accent/10 hidden md:inline">
-                <div className="w-[100%] h-[100%] grid place-content-center">
-                    <p className="font-semibold text-primaryText/50 text-[25px]">Choose a chat to get started!</p>
-                    <ChatUser />
+            <div className={`border w-[100%] bg-accent/10 ${!showMessages?("hidden"):("inline")}`}>
+                <div className={`w-[100%] h-[100%] ${selectedMessage==""?("grid place-content-center"):("")} `}>
+                    {
+                        selectedMessage == ""?(<p className="font-semibold text-primaryText/50 text-[25px]">Choose a chat to get started!</p>):(<ChatUser back={goBack}/>)
+                    }
                 </div>
             </div>
         </section>
