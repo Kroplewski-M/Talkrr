@@ -69,8 +69,7 @@ export const SearchUsers = ({setIsSearching}:SearchUsersPros)=>{
     const handleSelect = async(selectedId:string,selectedName:string,selectedPhotoUrl:string)=>{
         //CHECK IF CHAT EXISTS IF NOT CREATE
         const combinedID = userInfo.uid > selectedId? userInfo.uid + selectedId: selectedId + userInfo.uid;
-        try{
-            const chatRef = doc(db,"chats",combinedID); 
+        try{            const chatRef = doc(db,"chats",combinedID); 
             const res = await getDoc(chatRef);
 
             if(!res.exists()){
@@ -95,6 +94,7 @@ export const SearchUsers = ({setIsSearching}:SearchUsersPros)=>{
                     [combinedID+".date"]:serverTimestamp()
                 })
             }
+
 
         }catch(error){
             console.log(error);

@@ -8,6 +8,7 @@ import { Messages } from "./pages/Messages";
 import Authguard from "./components/AuthGuard";
 import { usePopUpsInfo } from "./context/PopUps";
 import { useUserInfo } from "./context/User";
+import { MessagesContext } from "./context/Messages";
 
 function App() {
   const {PopUps} = usePopUpsInfo();
@@ -26,6 +27,7 @@ function App() {
             ))
           }
         </div>
+        <MessagesContext>
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
@@ -34,6 +36,7 @@ function App() {
                 <Route path="/messages" element={<Messages />} />
             </Route>
         </Routes>
+        </MessagesContext>
       <Footer />
     </main>
   )
