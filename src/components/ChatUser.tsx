@@ -1,14 +1,20 @@
-
+import { Back } from "./svg/Back"
+import { useMessagesInfo } from "../context/Messages"
+import { useUserInfo } from "../context/User"
 
 interface ChatUserProps{
     back:()=>void,
 }
 export const ChatUser=({back}:ChatUserProps)=>{
+    const {selectedMessage} = useMessagesInfo();
+    const {userInfo} = useUserInfo();
 
     return(
         <>
             <div className="w-[100%] h-[100%] relative">
-                <div onClick={back} className="w-[50px] h-[50px]">&larr;</div>
+                <div onClick={back} className="w-[50px] h-[50px] md:hidden">
+                    <Back width={30} height={30} fill="#000000" />
+                </div>
                 <div>
                     <p>messages</p>
                 </div>

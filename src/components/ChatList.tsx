@@ -5,13 +5,22 @@ import { useState } from "react";
 import { SearchUsers } from "./SearchUsers";
 import { useMessagesInfo } from "../context/Messages";
 
-export const ChatList = ()=>{
+
+interface ChatListProps{
+    showMessage:()=>void,
+}
+
+export const ChatList = ({showMessage}:ChatListProps)=>{
     const {userInfo} = useUserInfo();
     const [showProfile, setShowProfile] = useState(false);
     const [isSearching,setIsSearching] = useState(false);
-    const {messages,selectMessage} = useMessagesInfo();
+    const {messages,selectMessage,setSelectedUserMessages} = useMessagesInfo();
 
-
+    const handleUserClick = (messsagesID:string, selectedUserInfo:any)=>{
+        selectMessage(messsagesID);
+        setSelectedUserMessages(selectedUserInfo);
+        showMessage();
+    }
     return(
         <section className="w-[100vw] md:w-[400px] h-[100vh] overflow-y-scroll bg-primaryButton/30">
             <div className="pt-[10px] px-[10px] ">
@@ -28,7 +37,7 @@ export const ChatList = ()=>{
                 isSearching?(<></>):(<>
                     {
                         Object.entries(messages!)?.map((chat:any)=>(
-                            <div key={chat[0]} className="" onClick={()=>selectMessage(chat[0])}>
+                            <div key={chat[0]} className="" onClick={()=>handleUserClick(chat[0],chat[1].userInfo)}>
                                 <UserMessage name={chat[1].userInfo.displayName} photoUrl={chat[1].userInfo.photoUrl} message="hello" />
                             </div>
                         ))
