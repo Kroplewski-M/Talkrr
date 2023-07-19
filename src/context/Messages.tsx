@@ -12,7 +12,7 @@ interface selectedUserProps{
 interface MessagesProvider{
     messages:object|undefined,
     selectedUser:selectedUserProps|undefined,
-    setSelectedUserMessages:(selectedUser:selectedUserProps)=>void,
+    setSelectedUserMessages:(selectedUser:selectedUserProps|undefined)=>void,
     selectedMessage:string,
     unselectMessage:()=>void
     selectMessage:(id:string)=>void,
@@ -50,7 +50,7 @@ export const MessagesContext = ({children}:MessagesProviderProps)=>{
     const selectMessage = (id:string)=>{
         setSelectedMessage(id);
     }
-    const setSelectedUserMessages=(selectedUser:selectedUserProps)=>{
+    const setSelectedUserMessages=(selectedUser:selectedUserProps|undefined)=>{
         setSelectedUser(selectedUser);
     }
     return <MessagesProvider.Provider value={{messages,selectedMessage,unselectMessage,selectMessage,selectedUser,setSelectedUserMessages}} >
