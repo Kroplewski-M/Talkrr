@@ -16,7 +16,12 @@ export const ChatList = ({showMessage}:ChatListProps)=>{
     const [isSearching,setIsSearching] = useState(false);
     const {messages,selectMessage,setSelectedUserMessages} = useMessagesInfo();
 
-    const handleUserClick = (messsagesID:string, selectedUserInfo:any)=>{
+    interface selectedUserProps{
+        displayName:string,
+        photoUrl:string,
+        uid:string,
+    }
+    const handleUserClick = (messsagesID:string, selectedUserInfo:selectedUserProps)=>{
         selectMessage(messsagesID);
         setSelectedUserMessages(selectedUserInfo);
         showMessage();

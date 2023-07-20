@@ -2,9 +2,11 @@ import { Back } from "./svg/Back"
 import { useMessagesInfo } from "../context/Messages"
 import { useUserInfo } from "../context/User"
 import { useEffect, useState } from "react";
-import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../firebase";
+import { Timestamp, arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { db, storage } from "../firebase";
 import { UploadImg } from "./svg/UploadImg";
+import { v4 as uuidv4 } from 'uuid';
+import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
 
 interface ChatUserProps{
     back:()=>void,
@@ -15,7 +17,7 @@ export const ChatUser=({back}:ChatUserProps)=>{
     const [messages,setMessages] = useState<any>([]);
     
     const [text,setText] = useState("");
-    const [img,setImg] = useState<FileList | null>(null);
+    const [img,setImg] = useState<File | null>(null);
 
     useEffect(()=>{
         if(selectedMessage != '' && selectedMessage != undefined){
@@ -39,11 +41,42 @@ export const ChatUser=({back}:ChatUserProps)=>{
         console.log(e.target.files[0]);
     }   
 
+    const metadata = {
+        contentType: 'image/jpeg',
+      };
     const sendMessage = async()=>{
-        if(img){
-
-        }else{
-            
+        try{
+            if(img){
+                
+                const storageRef = ref(storage, uuidv4());
+                const uploadTask = await uploadBytesResumable(storageRef,img,metadata);
+    
+                const downloadUrl = await getDownloadURL(uploadTask.ref);
+    
+                await updateDoc(doc(db,"chats",selectedMessage),{
+                    messages:arrayUnion({
+                        id: uuidv4(),
+                        text:text,
+                        senderId:userInfo.uid,
+                        date:Timestamp.now(),
+                        img:downloadUrl,
+                    })
+                })
+    
+            }else{
+                await updateDoc(doc(db,"chats",selectedMessage),{
+                    messages:arrayUnion({
+                        id: uuidv4(),
+                        text:text,
+                        senderId:userInfo.uid,
+                        date:Timestamp.now(),
+                    })
+                })
+            }
+        }catch(error){
+            console.log(error);
+        }finally{
+            setText("");
         }
     }
     const handleKey = (e:any)=>{
@@ -66,7 +99,7 @@ export const ChatUser=({back}:ChatUserProps)=>{
                     </div>
                     <p className="flex self-center ml-[10px] font-semibold">{selectedUser?.displayName}</p>
                 </div>
-                <div className="pt-16">
+                <div className="pt-16 h-[80%] overfloy-y-scroll">
                     <p>messages</p>
                     <p>{JSON.stringify(messages)}</p>
                 </div>
