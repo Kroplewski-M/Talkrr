@@ -7,6 +7,7 @@ import { db, storage } from "../firebase";
 import { UploadImg } from "./svg/UploadImg";
 import { v4 as uuidv4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { Message } from "./message";
 
 interface ChatUserProps{
     back:()=>void,
@@ -99,11 +100,17 @@ export const ChatUser=({back}:ChatUserProps)=>{
                     </div>
                     <p className="flex self-center ml-[10px] font-semibold">{selectedUser?.displayName}</p>
                 </div>
-                <div className="pt-16 h-[80%] overfloy-y-scroll">
-                    <p>messages</p>
-                    <p>{JSON.stringify(messages)}</p>
+                <div className="pt-16 h-[85%] overflow-y-scroll">
+                    {
+                        messages.map((message:any)=>(
+                            <div key={message.id}>
+                                <Message message={message.text} senderId={message.senderId} img={message?.img} date={message.date.seconds} />
+                            </div>
+                        ))
+                    }
+                    {/* <p>{JSON.stringify(messages)}</p> */}
                 </div>
-                <div className="absolute bottom-0 w-[100%] h-[100px] bg-accent/10 flex pt-5" >
+                <div className="absolute bottom-0 w-[100%] h-[100px] bg-accent/10 flex pt-5 " >
                     <input type="text" className="w-[80%] h-[40px] pl-5 bg-black/0 focus:outline-none text-primaryText font-semibold" placeholder="Type something..." value={text} onKeyDown={handleKey} onChange={setMessageValue}/>
                     <div className="mr-5 w-[40px] h-[35px]">
                         <label htmlFor="img" className="hover:cursor-pointer">
