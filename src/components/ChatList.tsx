@@ -42,8 +42,8 @@ export const ChatList = ({showMessage}:ChatListProps)=>{
                 isSearching?(<></>):(<>
                     {
                         Object.entries(messages!)?.map((chat:any)=>(
-                            <div key={chat[0]} className="" onClick={()=>handleUserClick(chat[0],chat[1].userInfo)}>
-                                <UserMessage name={chat[1].userInfo.displayName} photoUrl={chat[1].userInfo.photoUrl} message="hello" />
+                            <div key={chat[1].userInfo.uid} className="" onClick={()=>handleUserClick(chat[0],chat[1].userInfo)}>
+                                <UserMessage name={chat[1].userInfo.displayName} photoUrl={chat[1].userInfo.photoUrl} message={chat[1].lastMessage.message} />
                             </div>
                         ))
                     }

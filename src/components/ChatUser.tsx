@@ -2,12 +2,12 @@ import { Back } from "./svg/Back"
 import { useMessagesInfo } from "../context/Messages"
 import { useUserInfo } from "../context/User"
 import { useEffect, useState } from "react";
-import { Timestamp, arrayUnion, doc, onSnapshot, updateDoc } from "firebase/firestore";
+import { Timestamp, arrayUnion, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { UploadImg } from "./svg/UploadImg";
 import { v4 as uuidv4 } from 'uuid';
 import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
-import { Message } from "./message";
+import { Message } from "./Message";
 
 interface ChatUserProps{
     back:()=>void,
@@ -46,6 +46,8 @@ export const ChatUser=({back}:ChatUserProps)=>{
         contentType: 'image/jpeg',
       };
     const sendMessage = async()=>{
+        const message = text;
+        setText("");
         try{
             if(img){
                 
@@ -57,7 +59,7 @@ export const ChatUser=({back}:ChatUserProps)=>{
                 await updateDoc(doc(db,"chats",selectedMessage),{
                     messages:arrayUnion({
                         id: uuidv4(),
-                        text:text,
+                        text:message,
                         senderId:userInfo.uid,
                         date:Timestamp.now(),
                         img:downloadUrl,
@@ -68,16 +70,30 @@ export const ChatUser=({back}:ChatUserProps)=>{
                 await updateDoc(doc(db,"chats",selectedMessage),{
                     messages:arrayUnion({
                         id: uuidv4(),
-                        text:text,
+                        text:message,
                         senderId:userInfo.uid,
                         date:Timestamp.now(),
                     })
                 })
+                await updateDoc(doc(db,"userChats",userInfo.uid),{
+                    [selectedMessage + ".lastMessage"]:{
+                        message
+                    },
+                    [selectedMessage+".date"]: serverTimestamp(),
+                });
+                if(selectedUser != undefined){
+                    await updateDoc(doc(db,"userChats",selectedUser.uid),{
+                        [selectedMessage + ".lastMessage"]:{
+                            message
+                        },
+                        [selectedMessage+".date"]: serverTimestamp(),
+                    });
+                }
             }
         }catch(error){
             console.log(error);
         }finally{
-            setText("");
+            setImg(null);
         }
     }
     const handleKey = (e:any)=>{
