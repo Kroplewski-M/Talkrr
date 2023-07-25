@@ -4,12 +4,14 @@ import { useUserInfo } from "../context/User";
 interface messageProps{
     message?:string,
     senderId:string,
-    date:string,
+    date:Date,
     img?:string,
 }
 export const Message = ({message, senderId,date,img}:messageProps)=>{
     const {selectedUser} = useMessagesInfo();
     const {userInfo} = useUserInfo();
+    const dateMessage = new Date(Number(JSON.stringify(date)) * 1000).toLocaleTimeString();
+
 
     return(
         <div className={`flex mt-5 ${senderId == userInfo.uid?("flex-row-reverse"):("")} `}>
@@ -24,6 +26,7 @@ export const Message = ({message, senderId,date,img}:messageProps)=>{
                 }
                 <p>{message}</p>
             </div>
+            <p className="text-[12px] text-primaryText/50">{dateMessage}</p>
         </div>
     )
 }

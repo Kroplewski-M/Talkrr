@@ -1,12 +1,12 @@
 import { Back } from "./svg/Back"
 import { useMessagesInfo } from "../context/Messages"
 import { useUserInfo } from "../context/User"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Timestamp, arrayUnion, doc, onSnapshot, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db, storage } from "../firebase";
 import { UploadImg } from "./svg/UploadImg";
 import { v4 as uuidv4 } from 'uuid';
-import { getDownloadURL, ref, uploadBytes, uploadBytesResumable } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { Message } from "./Message";
 
 interface ChatUserProps{
@@ -104,6 +104,10 @@ export const ChatUser=({back}:ChatUserProps)=>{
     const setMessageValue = (e:any)=>{
         setText(e.target.value);
     }
+    const refs = useRef<null | HTMLDivElement>(null);
+    useEffect(()=>{
+        refs.current?.scrollIntoView({behavior:"smooth"});
+    },[messages])
     return(
         <>
             <div className="w-[100%] h-[100%] relative">
@@ -116,7 +120,7 @@ export const ChatUser=({back}:ChatUserProps)=>{
                     </div>
                     <p className="flex self-center ml-[10px] font-semibold">{selectedUser?.displayName}</p>
                 </div>
-                <div className="pt-16 h-[80%] overflow-y-scroll">
+                <div className="pt-16 h-[80%] overflow-y-scroll" ref={refs}>
                     {
                         messages.map((message:any)=>(
                             <div key={message.id}>
