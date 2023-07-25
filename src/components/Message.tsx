@@ -2,7 +2,7 @@ import { useMessagesInfo } from "../context/Messages";
 import { useUserInfo } from "../context/User";
 
 interface messageProps{
-    message:string,
+    message?:string,
     senderId:string,
     date:string,
     img?:string,

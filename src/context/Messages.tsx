@@ -11,8 +11,8 @@ interface selectedUserProps{
 }
 interface MessagesProvider{
     messages:object|undefined,
-    selectedUser:selectedUserProps|undefined,
-    setSelectedUserMessages:(selectedUser:selectedUserProps|undefined)=>void,
+    selectedUser:selectedUserProps|null,
+    setSelectedUserMessages:(selectedUser:selectedUserProps|null)=>void,
     selectedMessage:string,
     unselectMessage:()=>void
     selectMessage:(id:string)=>void,
@@ -29,7 +29,7 @@ export const useMessagesInfo = ()=>{
 export const MessagesContext = ({children}:MessagesProviderProps)=>{
     const [messages,setMessages] = useState<object|undefined>({});
     const [selectedMessage,setSelectedMessage] = useState<string>("");
-    const [selectedUser,setSelectedUser] = useState<selectedUserProps|undefined>();
+    const [selectedUser,setSelectedUser] = useState<selectedUserProps|null>(null);
 
     const {userInfo} = useUserInfo();
 
@@ -45,13 +45,14 @@ export const MessagesContext = ({children}:MessagesProviderProps)=>{
     },[userInfo.uid])
 
     const unselectMessage = ()=>{ 
-        setSelectedMessage("")
+        setSelectedMessage("");
     }
     const selectMessage = (id:string)=>{
         setSelectedMessage(id);
     }
-    const setSelectedUserMessages=(selectedUser:selectedUserProps|undefined)=>{
+    const setSelectedUserMessages=(selectedUser:selectedUserProps|null)=>{
         setSelectedUser(selectedUser);
+        console.log(selectedUser);
     }
     return <MessagesProvider.Provider value={{messages,selectedMessage,unselectMessage,selectMessage,selectedUser,setSelectedUserMessages}} >
         {children}

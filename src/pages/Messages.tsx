@@ -3,7 +3,7 @@ import { ChatList } from "../components/ChatList"
 import { ChatUser } from "../components/ChatUser"
 import { useMessagesInfo } from "../context/Messages"
 export const Messages = ()=>{
-    const {selectedMessage,selectMessage,setSelectedUserMessages} = useMessagesInfo();
+    const {selectedMessage,selectMessage,setSelectedUserMessages,unselectMessage} = useMessagesInfo();
     const [showMessages,setShowMessages] = useState(false);
     const [windowSize, setWindowSize] = useState<number>(getWindowSize());
     const mobileLimit:number = 768;
@@ -36,7 +36,7 @@ export const Messages = ()=>{
         useEffect(()=>{
             if(selectedMessage !=""){
                 setShowMessages(true);
-                setSelectedUserMessages(undefined);
+                setSelectedUserMessages(null);
             }
         },[selectedMessage])
     

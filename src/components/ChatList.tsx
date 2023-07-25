@@ -22,9 +22,10 @@ export const ChatList = ({showMessage}:ChatListProps)=>{
         uid:string,
     }
     const handleUserClick = (messsagesID:string, selectedUserInfo:selectedUserProps)=>{
-        selectMessage(messsagesID);
-        setSelectedUserMessages(selectedUserInfo);
-        showMessage();
+            setSelectedUserMessages(selectedUserInfo);
+            console.log(selectedUserInfo);
+            selectMessage(messsagesID);
+            showMessage();
     }
     return(
         <section className="w-[100vw] md:w-[400px] h-[100vh] overflow-y-scroll bg-primaryButton/30">
@@ -41,9 +42,9 @@ export const ChatList = ({showMessage}:ChatListProps)=>{
             {
                 isSearching?(<></>):(<>
                     {
-                        Object.entries(messages!)?.map((chat:any)=>(
+                        Object.entries(messages!)?.sort((a:any,b:any)=> b[1].date - a[1].date).map((chat:any)=>(
                             <div key={chat[1].userInfo.uid} className="" onClick={()=>handleUserClick(chat[0],chat[1].userInfo)}>
-                                <UserMessage name={chat[1].userInfo.displayName} photoUrl={chat[1].userInfo.photoUrl} message={chat[1].lastMessage.message} />
+                                <UserMessage name={chat[1].userInfo.displayName} photoUrl={chat[1].userInfo.photoUrl} message={chat[1]?.lastMessage?.message} />
                             </div>
                         ))
                     }

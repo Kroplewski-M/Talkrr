@@ -2,7 +2,7 @@
 interface UserMessageProps{
     name:string,
     photoUrl:string,
-    message:string,
+    message?:string,
 }
 export const UserMessage = ({message,photoUrl,name}:UserMessageProps)=>{
 
@@ -14,7 +14,7 @@ export const UserMessage = ({message,photoUrl,name}:UserMessageProps)=>{
             </div> 
             <div className="ml-[10px]">
                 <p className="font-bold">{name}</p>
-                <p className="text-primaryText">{message}</p>
+                <p className="text-primaryText">{message?message:""}</p>
             </div>
         </div>
             <hr className="opacity-[0.3] " />

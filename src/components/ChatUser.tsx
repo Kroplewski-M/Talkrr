@@ -116,15 +116,15 @@ export const ChatUser=({back}:ChatUserProps)=>{
                     </div>
                     <p className="flex self-center ml-[10px] font-semibold">{selectedUser?.displayName}</p>
                 </div>
-                <div className="pt-16 h-[85%] overflow-y-scroll">
+                <div className="pt-16 h-[80%] overflow-y-scroll">
                     {
                         messages.map((message:any)=>(
                             <div key={message.id}>
-                                <Message message={message.text} senderId={message.senderId} img={message?.img} date={message.date.seconds} />
+                                <Message message={message?.text} senderId={message.senderId} img={message?.img} date={message.date.seconds} />
                             </div>
                         ))
                     }
-                    {/* <p>{JSON.stringify(messages)}</p> */}
+                    <p>{JSON.stringify(selectedUser)}</p>
                 </div>
                 <div className="absolute bottom-0 w-[100%] h-[100px] bg-accent/10 flex pt-5 " >
                     <input type="text" className="w-[80%] h-[40px] pl-5 bg-black/0 focus:outline-none text-primaryText font-semibold" placeholder="Type something..." value={text} onKeyDown={handleKey} onChange={setMessageValue}/>
