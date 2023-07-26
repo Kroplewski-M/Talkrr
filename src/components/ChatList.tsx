@@ -24,9 +24,9 @@ export const ChatList = ({showMessage}:ChatListProps)=>{
     const handleUserClick = (messsagesID:string, selectedUserInfo:selectedUserProps)=>{
         selectMessage(messsagesID);
         showMessage();
-        setTimeout(() => {
-            setSelectedUserMessages(selectedUserInfo);
-        }, 1);
+        setSelectedUserMessages(selectedUserInfo);
+        // setTimeout(() => {
+        // }, 1);
     }
     return(
         <section className="w-[100vw] md:w-[400px] h-[100vh] overflow-y-scroll bg-primaryButton/30">
