@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext,useEffect,useState } from "react";
+import { createContext, Dispatch, ReactNode, SetStateAction, useContext,useEffect,useState } from "react";
 import { useUserInfo } from "./User";
 import {onSnapshot,doc} from "firebase/firestore";
 import { db } from "../firebase";
@@ -12,7 +12,8 @@ interface selectedUserProps{
 interface MessagesProvider{
     messages:object|undefined,
     selectedUser:selectedUserProps|null,
-    setSelectedUserMessages:(selectedUser:selectedUserProps|null)=>void,
+    setSelectedUserMessages:(selectedUser:selectedUserProps)=>void,
+    unselectUserMessage:()=>void,
     selectedMessage:string,
     unselectMessage:()=>void
     selectMessage:(id:string)=>void,
@@ -50,11 +51,13 @@ export const MessagesContext = ({children}:MessagesProviderProps)=>{
     const selectMessage = (id:string)=>{
         setSelectedMessage(id);
     }
-    const setSelectedUserMessages=(selectedUser:selectedUserProps|null)=>{
+    const setSelectedUserMessages=(selectedUser:selectedUserProps)=>{
         setSelectedUser(selectedUser);
-        console.log(selectedUser);
     }
-    return <MessagesProvider.Provider value={{messages,selectedMessage,unselectMessage,selectMessage,selectedUser,setSelectedUserMessages}} >
+    const unselectUserMessage=()=>{
+        setSelectedUser(null);
+    }
+    return <MessagesProvider.Provider value={{messages,selectedMessage,unselectMessage,selectMessage,selectedUser,setSelectedUserMessages,unselectUserMessage}} >
         {children}
     </MessagesProvider.Provider>
 }

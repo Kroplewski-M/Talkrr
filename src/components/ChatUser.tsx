@@ -108,6 +108,7 @@ export const ChatUser=({back}:ChatUserProps)=>{
     useEffect(()=>{
         refs.current?.scrollIntoView({behavior:"smooth"});
     },[messages])
+
     return(
         <>
             <div className="w-[100%] h-[100%] relative">
@@ -120,15 +121,14 @@ export const ChatUser=({back}:ChatUserProps)=>{
                     </div>
                     <p className="flex self-center ml-[10px] font-semibold">{selectedUser?.displayName}</p>
                 </div>
-                <div className="pt-16 h-[80%] overflow-y-scroll" ref={refs}>
+                <div className="pt-16 h-[80%] overflow-y-auto">
                     {
                         messages.map((message:any)=>(
-                            <div key={message.id}>
+                            <div key={message.id} ref={refs}>
                                 <Message message={message?.text} senderId={message.senderId} img={message?.img} date={message.date.seconds} />
                             </div>
                         ))
                     }
-                    <p>{JSON.stringify(selectedUser)}</p>
                 </div>
                 <div className="absolute bottom-0 w-[100%] h-[100px] bg-accent/10 flex pt-5 " >
                     <input type="text" className="w-[80%] h-[40px] pl-5 bg-black/0 focus:outline-none text-primaryText font-semibold" placeholder="Type something..." value={text} onKeyDown={handleKey} onChange={setMessageValue}/>
