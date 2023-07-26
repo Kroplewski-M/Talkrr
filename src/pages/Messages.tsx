@@ -3,7 +3,7 @@ import { ChatList } from "../components/ChatList"
 import { ChatUser } from "../components/ChatUser"
 import { useMessagesInfo } from "../context/Messages"
 export const Messages = ()=>{
-    const {selectedMessage,setSelectedUserMessages,unselectUserMessage} = useMessagesInfo();
+    const {selectedMessage,unselectUserMessage} = useMessagesInfo();
     const [showMessages,setShowMessages] = useState(false);
     const [windowSize, setWindowSize] = useState<number>(getWindowSize());
     const mobileLimit:number = 768;
