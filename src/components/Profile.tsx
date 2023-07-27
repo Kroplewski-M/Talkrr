@@ -2,17 +2,21 @@ import { useUserInfo } from "../context/User"
 import { Close } from "./svg/Close";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { useMessagesInfo } from "../context/Messages";
 interface ProfileProps{
     close: ()=>void,
 }
 
 export const Profile = ({close}:ProfileProps)=>{
     const {userInfo,logoutUser} = useUserInfo();
+    const {unselectMessage,unselectUserMessage} = useMessagesInfo();
     const navigate = useNavigate();
     const UserSignOut = async()=>{
         const auth = getAuth();
         try{
             await signOut(auth);
+            unselectMessage();
+            unselectUserMessage();
             logoutUser();
             navigate("/");
         }catch(error){

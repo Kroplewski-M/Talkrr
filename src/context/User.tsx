@@ -1,5 +1,4 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-
 interface userProps{
     uid:string,
     email:string,
