@@ -28,11 +28,13 @@ export const ChatList = ({showMessage}:ChatListProps)=>{
         // setTimeout(() => {
         // }, 1);
     }
+    const [loadedImg,setLoadedImg]=useState(false);
     return(
         <section className="w-[100vw] md:w-[400px] h-[100vh] overflow-y-scroll bg-primaryButton/30">
             <div className="pt-[10px] px-[10px] ">
                 <div className="flex self-center space-x-2 hover:cursor-pointer" onClick={()=>setShowProfile(true)}>
-                    <img src={userInfo.photoUrl} alt="" className="w-[40px] h-[40px] rounded-full"/>
+                    <img src={userInfo.photoUrl} alt="" className={`w-[40px] h-[40px] rounded-full ${loadedImg?(""):("hidden")}`} onLoad={()=>setLoadedImg(true)}/>
+                    <div className={` ${loadedImg?("hidden"):("")} text-primaryText/70 w-[40px] h-[40px] grid place-content-center bg-black/20 rounded-full text-[10px]`}>loading..</div>
                     <p className="text-primaryText md:pt-[5px] font-bold">{userInfo.displayName}</p>
                 </div>
             </div>
