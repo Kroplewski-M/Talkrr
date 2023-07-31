@@ -101,6 +101,7 @@ export const SearchUsers = ({setIsSearching}:SearchUsersPros)=>{
         }finally{
             setIsSearching(false);
             setNoResults(false);
+            setUserName("");
             setUsers([]);
         }
         

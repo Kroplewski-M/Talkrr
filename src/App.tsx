@@ -8,10 +8,31 @@ import { Messages } from "./pages/Messages";
 import Authguard from "./components/AuthGuard";
 import { usePopUpsInfo } from "./context/PopUps";
 import { MessagesContext } from "./context/Messages";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useUserInfo } from "./context/User";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function App() {
   const {PopUps} = usePopUpsInfo();
+  const {loginUser} = useUserInfo();
+  const auth = getAuth();
+  const navigate = useNavigate();
 
+  useEffect(()=>{
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        loginUser({
+          uid:user.uid,
+          displayName:user.displayName!=null?user.displayName:"",
+          email:user.email!=null?user.email:"",
+          photoUrl: user.photoURL!=null?user.photoURL:"",
+      });
+      navigate('/messages');
+      } 
+    });
+
+  },[])
   return (
     <main className="min-h-100vh">
         <Nav />
