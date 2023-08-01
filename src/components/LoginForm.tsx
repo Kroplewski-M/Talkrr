@@ -32,9 +32,12 @@ export const LoginForm = ()=>{
                 email:user.user.email!=null?user.user.email:"",
                 photoUrl: user.user.photoURL!=null?user.user.photoURL:"",
             });
-            navigate('/messages');
+            PushPopUp("User Found!","successPopUp");
+            setTimeout(() => {
+                navigate('/messages');
+            }, 1000);
         }catch(error){
-            console.log(error);
+            PushPopUp("User not Found!","errorPopUp");
         }finally{
             setLoading(false)
         }

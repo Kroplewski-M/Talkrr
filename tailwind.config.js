@@ -30,4 +30,5 @@ export default {
     },
   },
   plugins: [],
+  safelist: ["bg-defaultPopUp", "bg-errorPopUp", "bg-successPopUp"],
 };
