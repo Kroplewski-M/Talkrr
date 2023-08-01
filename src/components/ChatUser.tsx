@@ -20,7 +20,6 @@ export const ChatUser=({back}:ChatUserProps)=>{
     
     const [text,setText] = useState("");
     const [img,setImg] = useState<File | null>(null);
-    const [selectedImgURL,setSelectedImgURL] = useState('');
 
     useEffect(()=>{
         if(selectedMessage != '' && selectedMessage != undefined){
